@@ -1,0 +1,3 @@
+com/yuolga/auto1/Main.java
+ com.yuolga.auto1.Main
+ com.yuolga.auto1.Main$1
