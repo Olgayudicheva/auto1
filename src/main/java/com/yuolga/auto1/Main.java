@@ -103,8 +103,8 @@ public class Main {
 
         driver.manage().window().maximize();
 
-        driver.get("https://otus.ru");
         try {
+            driver.get("https://otus.ru");
             driver.findElement(new By.ByClassName("header2__auth")).click();
             Thread.sleep(3000);
             WebElement login = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[2]/input"));
