@@ -57,6 +57,7 @@ public class Main {
         } else {
             System.out.println("Первый результат не содержит нужные слова");
         }
+        driver.quit();
     }
 
     static void test2() throws InterruptedException {
@@ -79,7 +80,7 @@ public class Main {
         Actions actions = new Actions(driver);
         actions.moveToElement(element).click().perform();
         String miniImage = element.findElement(new By.ByClassName("img-fluid")).getAttribute("src");
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        Thread.sleep(3000);
         WebElement fullResImage = driver.findElement(new By.ById("fullResImage"));
         String fullImage = fullResImage.getAttribute("src");
         if (miniImage.equals(fullImage)) {
@@ -87,9 +88,11 @@ public class Main {
         } else {
             System.out.println("Что то пошло не так");
         }
+        Thread.sleep(3000);
+        driver.quit();
     }
 
-    static void test3() {
+    static void test3() throws InterruptedException {
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
 
@@ -98,7 +101,7 @@ public class Main {
         driver.get("https://otus.ru");
 
         driver.findElement(new By.ByClassName("header2__auth")).click();
-        driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(5));
+        Thread.sleep(3000);
         WebElement login = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[2]/input"));
         WebElement password = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[3]/input"));
         WebElement loginButton = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[4]/button"));
@@ -113,5 +116,7 @@ public class Main {
                 System.out.println(cookie);
             }
         });
+        Thread.sleep(3000);
+        driver.quit();
     }
 }
