@@ -113,7 +113,7 @@ public class Main {
             login.sendKeys("test.olga123456@gmail.com");
             password.sendKeys("passpass1");
             loginButton.click();
-
+            Thread.sleep(1000);
             System.out.println("COOKIE:");
             driver.manage().getCookies().forEach(new Consumer<Cookie>() {
                 @Override
