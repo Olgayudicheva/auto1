@@ -15,14 +15,14 @@ import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class Main {
+public class HomeWork1 {
     @BeforeAll
     static void before() {
         System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
     }
 
     @Test
-    void test1() {
+    void testDuckduckgo() {
         //Настройки хром драйвера
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
@@ -59,7 +59,7 @@ public class Main {
     }
 
     @Test
-     void test2() throws InterruptedException {
+     void testImage() throws InterruptedException {
         //Настройки хром драйвера
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--kiosk");
@@ -90,7 +90,7 @@ public class Main {
     }
 
     @Test
-     void test3() throws InterruptedException {
+     void testOtus() throws InterruptedException {
         ChromeOptions options = new ChromeOptions();
         WebDriver driver = new ChromeDriver(options);
 
