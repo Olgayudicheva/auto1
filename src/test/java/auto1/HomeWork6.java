@@ -191,7 +191,7 @@ public class HomeWork6 {
 
         try {
             driver.manage().window().maximize();
-            authOTUS(driver, "test.olga123456@gmail.com", "passpass1");
+            authOTUS(driver, System.getProperty("login"), System.getProperty("password"));
             WebElement headerMenu = getHeaderMenuElement(driver);
             new Actions(driver).moveToElement(headerMenu).perform();
             WebElement myOffice = getMyOfficeElement(driver);
