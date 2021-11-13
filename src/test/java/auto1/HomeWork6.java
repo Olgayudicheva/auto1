@@ -15,10 +15,10 @@ import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
 
-public class HomeWork2 {
+public class HomeWork6 {
 
 
-    public HomeWork2() throws ParseException {
+    public HomeWork6() throws ParseException {
     }
 
     @BeforeAll
@@ -139,7 +139,7 @@ public class HomeWork2 {
 
         try {
             driver.manage().window().maximize();
-            authOTUS(driver, "test.olga123456@gmail.com", "passpass1");
+            authOTUS(driver, System.getProperty("login"), System.getProperty("password"));
             WebElement headerMenu = getHeaderMenuElement(driver);
             new Actions(driver).moveToElement(headerMenu).perform();
             WebElement myOffice = getMyOfficeElement(driver);
@@ -168,10 +168,13 @@ public class HomeWork2 {
 
             dataBirth.clear();
             dataBirth.sendKeys(dateTimeFormatter.format(randomDateBirth));
-            deleteAllContact(driver);
-            addContact(driver);
-            addContact(driver);
 
+            deleteAllContact(driver);
+            Thread.sleep(500);
+            addContact(driver);
+            Thread.sleep(500);
+            addContact(driver);
+            Thread.sleep(500);
             driver.findElement(new By.ByXPath("/html/body/div[1]/div/div[5]/div[3]/div[2]/div[2]/div/form/div[2]/div/div/button[2]")).click();
         } finally {
             Thread.sleep(5000);
@@ -215,10 +218,17 @@ public class HomeWork2 {
             for(int i=0;i<contactsForTest.size();i++) {
                 WebElement contactElement = contactsList.get(i);
                 WebElement lastContactInput = contactElement.findElement(new By.ByXPath(".//input[starts-with(@id,'id_contact') and contains(@type,'text')]"));
-                Contact contact = contactsForTest.get(i);
                 String selectedType = contactElement.findElement(new By.ByXPath("./div[1]/div[1]/div[1]/div[1]/label/div")).getText();
+                String value = lastContactInput.getAttribute("value");
+                Contact contact = null;
+                for (Contact c : contactsForTest) {
+                    if (c.text.equals(value)) {
+                        contact = c;
+                    }
+                }
+                Assertions.assertNotNull(contact);
+                Assertions.assertEquals(contact.text, value);
                 Assertions.assertEquals(contact.type, selectedType);
-                Assertions.assertEquals(contact.text, lastContactInput.getAttribute("value"));
             }
         } finally {
             Thread.sleep(5000);

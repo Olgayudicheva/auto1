@@ -19,4 +19,7 @@ dependencies {
 
 test {
     useJUnitPlatform()
+    systemProperty 'login', System.getProperty('login') ?: "test.olga123456@gmail.com"
+    systemProperty 'password', System.getProperty('password') ?: "passpass1"
+    testLogging.showStandardStreams = true
 }

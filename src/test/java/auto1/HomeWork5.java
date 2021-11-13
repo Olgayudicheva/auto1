@@ -15,7 +15,7 @@ import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 
-public class HomeWork1 {
+public class HomeWork5 {
     @BeforeAll
     static void before() {
         System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
