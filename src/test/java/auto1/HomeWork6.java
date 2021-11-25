@@ -8,6 +8,10 @@ import org.openqa.selenium.WebElement;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
 import java.io.PrintStream;
@@ -15,12 +19,15 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.concurrent.ThreadLocalRandom;
+import java.util.logging.Handler;
 
 public class HomeWork6 {
 
 
     public HomeWork6() throws ParseException {
     }
+
+    static final Logger LOGGER = LoggerFactory.getLogger(HomeWork6.class);
 
     @BeforeAll
     static void before() {
@@ -47,17 +54,18 @@ public class HomeWork6 {
         return stringBuilder.toString();
     }
 
-    void authOTUS(WebDriver driver, String login, String password) throws InterruptedException {
+    void authOTUS(WebDriver driver, String loginString, String passwordString) throws InterruptedException {
         driver.get("https://otus.ru");
         driver.findElement(new By.ByClassName("header2__auth")).click();
-        Thread.sleep(1000);
-        WebElement loginElement = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[2]/input"));
-        WebElement passwordElement = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[3]/input"));
-        WebElement loginButtonElement = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[4]/button"));
-        loginElement.sendKeys(login);
-        passwordElement.sendKeys(password);
-        loginButtonElement.click();
-        Thread.sleep(1000);
+        // Thread.sleep(1000);
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]")));
+        WebElement login = driver.findElement(new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]"));
+        WebElement password = driver.findElement(new By.ByXPath("//input[@name=\"password\" and not(contains(@class,\"hide\"))]"));
+        WebElement loginButton = driver.findElement(new By.ByXPath("//button[contains(text(), 'Войти') and not(contains(text(), 'аккаунт'))]"));
+        login.sendKeys(loginString);
+        password.sendKeys(passwordString);
+        loginButton.click();
     }
 
     Date randomDate(Date from, Date to) {
@@ -71,39 +79,58 @@ public class HomeWork6 {
     String endDate = "01.01.2010";
 
     WebElement getHeaderMenuElement(WebDriver driver) {
-        return driver.findElement(new By.ByXPath("/html/body/div[1]/div/header[2]/div/div[3]/div"));
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//div[@class=\"header2-menu\"]")));
+        return driver.findElement(new By.ByXPath("//div[@class=\"header2-menu\"]"));
     }
 
     WebElement getMyOfficeElement(WebDriver driver) {
-        return driver.findElement(new By.ByXPath("/html/body/div[1]/div/header[2]/div/div[3]/div/div[1]/div[2]/a[2]"));
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//a[@title=\"Личный кабинет\"]")));
+        return driver.findElement(new By.ByXPath("//a[@title=\"Личный кабинет\"]"));
     }
 
     WebElement getAboutMeElement(WebDriver driver) {
-        return driver.findElement(new By.ByXPath("/html/body/div[1]/div/div[3]/div/div/div/a[3]"));
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//div[contains(@class,'nav ') and not(contains(@style,'display: none'))]//a[@title=\"О себе\"]")));
+        return driver.findElement(new By.ByXPath("//div[contains(@class,'nav ') and not(contains(@style,'display: none'))]//a[@title=\"О себе\"]"));
     }
 
     WebElement getNameElement(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//*[@id=\"id_fname\"]")));
         return driver.findElement(new By.ByXPath("//*[@id=\"id_fname\"]"));
     }
 
     WebElement getLatNameElement(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//*[@id=\"id_fname_latin\"]")));
         return driver.findElement(new By.ByXPath("//*[@id=\"id_fname_latin\"]"));
+
     }
 
     WebElement getLastNameElement(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//*[@id=\"id_lname\"]")));
         return driver.findElement(new By.ByXPath("//*[@id=\"id_lname\"]"));
     }
 
     WebElement getLatLastNameElement(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//*[@id=\"id_lname_latin\"]")));
         return driver.findElement(new By.ByXPath("//*[@id=\"id_lname_latin\"]"));
     }
 
     WebElement getBlogNameElement(WebDriver driver) {
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//*[@id=\"id_blog_name\"]")));
         return driver.findElement(new By.ByXPath("//*[@id=\"id_blog_name\"]"));
     }
 
     WebElement getBirthDateElement(WebDriver driver) {
-        return driver.findElement(new By.ByXPath("/html/body/div[1]/div/div[5]/div[3]/div[2]/div[2]/div/form/div[1]/div[1]/div/div[4]/div/div/input"));
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//*[@name=\"date_of_birth\"]")));
+        return driver.findElement(new By.ByXPath("//input [@name=\"date_of_birth\"]"));
     }
 
     String latSym = "qwertyuiopasdfghjklzxcvbnmQWERTYUIOPASDFGHJKLZXCVBNM";
@@ -133,6 +160,7 @@ public class HomeWork6 {
         try {
             driver.manage().window().maximize();
             authOTUS(driver, System.getProperty("login"), System.getProperty("password"));
+
             WebElement headerMenu = getHeaderMenuElement(driver);
             new Actions(driver).moveToElement(headerMenu).perform();
             WebElement myOffice = getMyOfficeElement(driver);
@@ -163,14 +191,13 @@ public class HomeWork6 {
             dataBirth.sendKeys(dateTimeFormatter.format(randomDateBirth));
 
             deleteAllContact(driver);
-            Thread.sleep(500);
             addContact(driver);
-            Thread.sleep(500);
             addContact(driver);
-            Thread.sleep(500);
-            driver.findElement(new By.ByXPath("/html/body/div[1]/div/div[5]/div[3]/div[2]/div[2]/div/form/div[2]/div/div/button[2]")).click();
+            WebDriverWait wait = new WebDriverWait(driver,10);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//button[@title=\"Сохранить и заполнить позже\"]")));
+            driver.findElement(new By.ByXPath("//button[@title=\"Сохранить и заполнить позже\"]")).click();
         } finally {
-            Thread.sleep(5000);
+
             driver.quit();
         }
     }
@@ -224,29 +251,34 @@ public class HomeWork6 {
                 Assertions.assertEquals(contact.type, selectedType);
             }
         } finally {
-            Thread.sleep(5000);
+
             driver.quit();
         }
     }
 
     List<WebElement> getContactsListElements(WebDriver driver) {
-        return driver.findElements(new By.ByXPath("/html/body/div[1]/div/div[5]/div[3]/div[2]/div[2]/div/form/div[1]/div[3]/div[2]/div[2]/div/div[@data-num and not(contains(@class,'hide'))]"));
+        //WebDriverWait wait = new WebDriverWait(driver,10);
+        //wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//div[@data-num and not(contains(@class,'hide'))]")));
+        return driver.findElements(new By.ByXPath("//div[@data-num and not(contains(@class,'hide'))]"));
     }
 
     void deleteAllContact(WebDriver driver) throws InterruptedException {
-        List<WebElement> contacts = getContactsListElements(driver);;
+        List<WebElement> contacts = getContactsListElements(driver);
+        LOGGER.info("---Удаление всех контактов---");
         while (!contacts.isEmpty()) {
             WebElement last = contacts.get(contacts.size()-1);
             WebElement deleteButton = last.findElement(new By.ByXPath("./div[3]/div[2]/button"));
             deleteButton.click();
-            Thread.sleep(300);
             contacts = getContactsListElements(driver);
         }
 
     }
 
     void addContact(WebDriver driver) {
-        WebElement addContact = driver.findElement(new By.ByXPath("/html/body/div[1]/div/div[5]/div[3]/div[2]/div[2]/div/form/div[1]/div[3]/div[2]/div[2]/button"));
+        LOGGER.info("---Добавление контакта---");
+        WebDriverWait wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//button[text()=\"Добавить\"]")));
+        WebElement addContact = driver.findElement(new By.ByXPath("//button[text()=\"Добавить\"]"));
 
         addContact.click();
         List<WebElement> contacts = getContactsListElements(driver);
@@ -262,7 +294,7 @@ public class HomeWork6 {
         lastContactSelected.click();
         WebElement contatsTypeMenu = lastElement.findElement(new By.ByXPath(".//div[@class=\"lk-cv-block__select-scroll lk-cv-block__select-scroll_service js-custom-select-options\"]"));
         List<WebElement> contactTypes = contatsTypeMenu.findElements(new By.ByXPath(".//*"));
-        int randomIndex = ThreadLocalRandom.current().nextInt(0, contactTypes.size() - 1);
+        int randomIndex = ThreadLocalRandom.current().nextInt(1, contactTypes.size() - 1);
         contactTypes.get(randomIndex).click();
 
         String selectedType = lastElement.findElement(new By.ByXPath("./div[1]/div[1]/div[1]/div[1]/label/div")).getText();
