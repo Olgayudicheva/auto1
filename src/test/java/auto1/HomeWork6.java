@@ -1,5 +1,6 @@
 package auto1;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -23,15 +24,7 @@ public class HomeWork6 {
 
     @BeforeAll
     static void before() {
-        //Не могу проверить на linux и windows, у меня MacBook
-        String os = System.getProperty("os.name").toLowerCase();
-        if (os.contains("Mac".toLowerCase())) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
-        } else if (os.contains("windows".toLowerCase())) {
-            System.setProperty("webdriver.chrome.driver", "chromedriver.exe");
-        } else {
-            System.setProperty("webdriver.chrome.driver", "chromedriver_linux");
-        }
+        WebDriverManager.chromedriver().setup();
     }
 
     class Contact {
