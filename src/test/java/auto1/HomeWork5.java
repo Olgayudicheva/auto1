@@ -1,5 +1,6 @@
 package auto1;
 
+import io.github.bonigarcia.wdm.WebDriverManager;
 import io.netty.util.internal.SystemPropertyUtil;
 import org.asynchttpclient.ws.WebSocketUtils;
 import org.junit.jupiter.api.BeforeAll;
@@ -18,7 +19,8 @@ import java.util.function.Consumer;
 public class HomeWork5 {
     @BeforeAll
     static void before() {
-        System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
+        //System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
+        WebDriverManager.chromedriver().setup();
     }
 
     @Test
@@ -26,9 +28,11 @@ public class HomeWork5 {
         //Настройки хром драйвера
         ChromeOptions options = new ChromeOptions();
         options.addArguments("--headless");
-        options.addArguments("--start-maximised");
+        options.addArguments("user-agent=Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/61.0.3163.100 Safari/537.36");
+        //options.addArguments("--start-maximised");
 
         WebDriver driver = new ChromeDriver(options);
+        driver.manage().window().maximize();
         try {
             driver.get("https://duckduckgo.com");
 
@@ -79,11 +83,13 @@ public class HomeWork5 {
             Actions actions = new Actions(driver);
             actions.moveToElement(element).click().perform();
             String miniImage = element.findElement(new By.ByClassName("img-fluid")).getAttribute("src");
-            Thread.sleep(2000);
+            //Thread.sleep(2000);
+            WebDriverWait wait = new WebDriverWait(driver,10);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ById("fullResImage")));
             WebElement fullResImage = driver.findElement(new By.ById("fullResImage"));
             String fullImage = fullResImage.getAttribute("src");
             Assertions.assertEquals(miniImage, fullImage);
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
         } finally {
             driver.quit();
         }
@@ -99,14 +105,16 @@ public class HomeWork5 {
         try {
             driver.get("https://otus.ru");
             driver.findElement(new By.ByClassName("header2__auth")).click();
-            Thread.sleep(1000);
-            WebElement login = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[2]/input"));
-            WebElement password = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[3]/input"));
-            WebElement loginButton = driver.findElement(new By.ByXPath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[4]/button"));
+           // Thread.sleep(1000);
+            WebDriverWait wait = new WebDriverWait(driver,10);
+            wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]")));
+            WebElement login = driver.findElement(new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]"));
+            WebElement password = driver.findElement(new By.ByXPath("//input[@name=\"password\" and not(contains(@class,\"hide\"))]"));
+            WebElement loginButton = driver.findElement(new By.ByXPath("//button[contains(text(), 'Войти') and not(contains(text(), 'аккаунт'))]"));
             login.sendKeys("test.olga123456@gmail.com");
             password.sendKeys("passpass1");
             loginButton.click();
-            Thread.sleep(1000);
+           // Thread.sleep(1000);
             System.out.println("COOKIE:");
             driver.manage().getCookies().forEach(new Consumer<Cookie>() {
                 @Override
@@ -114,7 +122,7 @@ public class HomeWork5 {
                     System.out.println(cookie);
                 }
             });
-            Thread.sleep(1000);
+           // Thread.sleep(1000);
         } finally {
             driver.quit();
         }
