@@ -2,6 +2,9 @@ package auto1;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
 import io.netty.util.internal.SystemPropertyUtil;
+import io.netty.util.internal.logging.Log4J2LoggerFactory;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.asynchttpclient.ws.WebSocketUtils;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -12,11 +15,14 @@ import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.junit.jupiter.api.Assertions;
+
 import java.time.Duration;
 import java.util.List;
 import java.util.function.Consumer;
 
 public class HomeWork5 {
+    static final Logger LOGGER = LogManager.getLogger(HomeWork5.class);
+    
     @BeforeAll
     static void before() {
         //System.setProperty("webdriver.chrome.driver", "chromedriver_mac");
@@ -41,20 +47,20 @@ public class HomeWork5 {
             searchInput.sendKeys("ОТУС");
             buttonSearch.click();
 
-            System.out.println("---Список найденого по слову \"ОТУС\"---");
+            LOGGER.info("---Список найденого по слову \"ОТУС\"---");
 
             List<WebElement> listSearch = driver.findElements(new By.ByClassName("result__body"));
             for (int i = 0; i < listSearch.size(); i++) {
-                System.out.println((i + 1) + ")");
-                System.out.println(listSearch.get(i).getText());
+                LOGGER.info((i + 1) + ")");
+                LOGGER.info(listSearch.get(i).getText());
             }
 
-            System.out.println("---------");
+            LOGGER.info("---------");
 
-            System.out.println("---Проверка первого элемента в списке---");
+            LOGGER.info("---Проверка первого элемента в списке---");
             WebElement result1 = listSearch.get(0);
 
-            System.out.println(result1.getText());
+            LOGGER.info(result1.getText());
             Assertions.assertTrue(result1.getText().contains("Онлайн‑курсы для профессионалов, дистанционное обучение"));
         } finally {
             driver.quit();
@@ -115,11 +121,11 @@ public class HomeWork5 {
             password.sendKeys("passpass1");
             loginButton.click();
            // Thread.sleep(1000);
-            System.out.println("COOKIE:");
+            LOGGER.info("COOKIE:");
             driver.manage().getCookies().forEach(new Consumer<Cookie>() {
                 @Override
                 public void accept(Cookie cookie) {
-                    System.out.println(cookie);
+                    LOGGER.info(cookie.toString());
                 }
             });
            // Thread.sleep(1000);

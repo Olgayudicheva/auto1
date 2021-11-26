@@ -1,6 +1,8 @@
 package auto1;
 
 import io.github.bonigarcia.wdm.WebDriverManager;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.junit.jupiter.api.*;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
@@ -10,7 +12,6 @@ import org.openqa.selenium.chrome.ChromeOptions;
 import org.openqa.selenium.interactions.Actions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.WebDriverWait;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.ByteArrayOutputStream;
@@ -27,7 +28,7 @@ public class HomeWork6 {
     public HomeWork6() throws ParseException {
     }
 
-    static final Logger LOGGER = LoggerFactory.getLogger(HomeWork6.class);
+    static final Logger LOGGER = LogManager.getLogger(HomeWork6.class);
 
     @BeforeAll
     static void before() {
