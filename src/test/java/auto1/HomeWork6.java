@@ -34,7 +34,11 @@ public class HomeWork6 {
     static void before() {
         WebDriverManager.chromedriver().setup();
     }
-
+    WebDriver driver;
+    @AfterEach
+    void after() {
+        driver.quit();
+    }
     class Contact {
         String type;
         String text;
@@ -58,7 +62,6 @@ public class HomeWork6 {
     void authOTUS(WebDriver driver, String loginString, String passwordString) throws InterruptedException {
         driver.get("https://otus.ru");
         driver.findElement(new By.ByClassName("header2__auth")).click();
-        // Thread.sleep(1000);
         WebDriverWait wait = new WebDriverWait(driver,10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]")));
         WebElement login = driver.findElement(new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]"));
@@ -156,9 +159,8 @@ public class HomeWork6 {
         //options.addArguments("--headless");
         options.addArguments("--start-maximised");
 
-        WebDriver driver = new ChromeDriver(options);
+        driver = new ChromeDriver(options);
 
-        try {
             driver.manage().window().maximize();
             authOTUS(driver, System.getProperty("login"), System.getProperty("password"));
 
@@ -197,10 +199,7 @@ public class HomeWork6 {
             WebDriverWait wait = new WebDriverWait(driver,10);
             wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//button[@title=\"Сохранить и заполнить позже\"]")));
             driver.findElement(new By.ByXPath("//button[@title=\"Сохранить и заполнить позже\"]")).click();
-        } finally {
 
-            driver.quit();
-        }
     }
 
     void checkData() throws InterruptedException {
@@ -208,9 +207,11 @@ public class HomeWork6 {
         //options.addArguments("--headless");
         options.addArguments("--start-maximised");
 
-        WebDriver driver = new ChromeDriver(options);
+        if(driver!=null) {
+            driver.quit();
+        }
+        driver = new ChromeDriver(options);
 
-        try {
             driver.manage().window().maximize();
             authOTUS(driver, System.getProperty("login"), System.getProperty("password"));
             WebElement headerMenu = getHeaderMenuElement(driver);
@@ -251,10 +252,6 @@ public class HomeWork6 {
                 Assertions.assertEquals(contact.text, value);
                 Assertions.assertEquals(contact.type, selectedType);
             }
-        } finally {
-
-            driver.quit();
-        }
     }
 
     List<WebElement> getContactsListElements(WebDriver driver) {
