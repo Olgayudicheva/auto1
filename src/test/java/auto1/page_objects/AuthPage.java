@@ -1,5 +1,7 @@
 package auto1.page_objects;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import org.openqa.selenium.By;
 import org.openqa.selenium.Cookie;
 import org.openqa.selenium.WebDriver;
@@ -10,6 +12,8 @@ import org.openqa.selenium.support.ui.WebDriverWait;
 import java.util.function.Consumer;
 
 public class AuthPage {
+    final Logger LOGGER = LogManager.getLogger(AuthPage.class);
+
     By bySignInButton = new By.ByXPath("//button[@data-modal-id=\"new-log-reg\"]");
     By byLoginInput = new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]");
     By byPasswordInput = new By.ByXPath("//input[@name=\"password\" and not(contains(@class,\"hide\"))]");
@@ -28,6 +32,7 @@ public class AuthPage {
     }
 
     public MainPage auth (String email, String password){
+        LOGGER.info("---Авторизация---\n"+"email: "+email+"\npassword: "+password);
         driver.findElement(bySignInButton).click();
         // Thread.sleep(1000);
         WebDriverWait wait = new WebDriverWait(driver,10);
