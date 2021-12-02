@@ -37,8 +37,6 @@ public class AuthPage {
     public MainPage auth (String email, String password){
         LOGGER.info("---Авторизация---\n"+"email: "+email+"\npassword: "+password);
         driver.findElement(bySignInButton).click();
-        // Thread.sleep(1000);
-
 
         wait.until(ExpectedConditions.visibilityOfElementLocated(byLoginInput));
 
@@ -56,7 +54,6 @@ public class AuthPage {
 
         WebElement loginButtonElement = driver.findElement(byEnterButton);
         loginButtonElement.click();
-        // Thread.sleep(1000);
         System.out.println("COOKIE:");
         driver.manage().getCookies().forEach(new Consumer<Cookie>() {
             @Override
