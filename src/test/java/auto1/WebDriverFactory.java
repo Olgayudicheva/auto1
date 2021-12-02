@@ -52,13 +52,13 @@ public class WebDriverFactory {
         switch (webDriverName) {
             case CHROME:
                 WebDriverManager.chromedriver().setup();
-                return new ChromeDriver(options);
+                return new ChromeDriver((ChromeOptions) options);
             case SAFARI:
                 WebDriverManager.safaridriver().setup();
-                return new SafariDriver(options);
+                return new SafariDriver((SafariOptions) options);
             case FIREFOX:
                 WebDriverManager.firefoxdriver().setup();
-                return new FirefoxDriver(options);
+                return new FirefoxDriver((FirefoxOptions) options);
         }
         return new ChromeDriver();
     }

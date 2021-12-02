@@ -13,6 +13,7 @@ import java.util.function.Consumer;
 
 public class AuthPage {
     final Logger LOGGER = LogManager.getLogger(AuthPage.class);
+    final WebDriverWait wait;
 
     By bySignInButton = new By.ByXPath("//button[@data-modal-id=\"new-log-reg\"]");
     By byLoginInput = new By.ByXPath("//input[@name=\"email\" and not(contains(@class,\"hide\")) and @type=\"text\"]");
@@ -23,6 +24,8 @@ public class AuthPage {
 
     public AuthPage(WebDriver driver) {
         this.driver = driver;
+        this.wait = new WebDriverWait(driver,10);
+        wait.until(ExpectedConditions.visibilityOfElementLocated(bySignInButton));
         if (!"https://otus.ru/".equals(driver.getCurrentUrl())) {
             throw new IllegalStateException("This is not the login page");
         }
@@ -35,13 +38,23 @@ public class AuthPage {
         LOGGER.info("---Авторизация---\n"+"email: "+email+"\npassword: "+password);
         driver.findElement(bySignInButton).click();
         // Thread.sleep(1000);
-        WebDriverWait wait = new WebDriverWait(driver,10);
+
+
         wait.until(ExpectedConditions.visibilityOfElementLocated(byLoginInput));
-        WebElement loginElement = driver.findElement(byLoginInput);
+
         WebElement passwordElement = driver.findElement(byPasswordInput);
-        WebElement loginButtonElement = driver.findElement(byEnterButton);
+
+        for (String s : password.split("")) {
+            passwordElement.sendKeys(s);
+        }
+        wait.until(ExpectedConditions.attributeToBe(byPasswordInput, "value", password));
+
+        WebElement loginElement = driver.findElement(byLoginInput);
         loginElement.sendKeys(email);
-        passwordElement.sendKeys(password);
+        wait.until(ExpectedConditions.attributeToBe(byLoginInput, "value", email));
+
+
+        WebElement loginButtonElement = driver.findElement(byEnterButton);
         loginButtonElement.click();
         // Thread.sleep(1000);
         System.out.println("COOKIE:");

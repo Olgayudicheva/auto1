@@ -15,6 +15,7 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class HomeWork7 {
     static final Logger LOGGER = LogManager.getLogger(HomeWork7.class);
@@ -36,8 +37,8 @@ public class HomeWork7 {
 
     @Test
     void test1() throws InterruptedException {
-        ChromeOptions options = new ChromeOptions();
-        driver = WebDriverFactory.create(WebDriverFactory.WebDriverName.parseString(System.getProperty("browser")),options);
+        List<String> arg = new ArrayList<>();
+        driver = WebDriverFactory.create(WebDriverFactory.WebDriverName.parseString(System.getProperty("browser")),arg);
 
         driver.manage().window().maximize();
 

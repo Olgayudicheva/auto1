@@ -32,13 +32,16 @@ public class PrivateCabinetPage {
     By bySaveButton = new By.ByXPath("//button[@title=\"Сохранить и заполнить позже\"]");
 
     private final WebDriver driver;
+    private final WebDriverWait wait;
 
     public PrivateCabinetPage(WebDriver driver) {
         this.driver = driver;
+        wait = new WebDriverWait(driver, 10);
     }
 
     public void clickToAboutMe() {
         LOGGER.info("---Переход на экран \"О себе\"---");
+        wait.until(ExpectedConditions.visibilityOfElementLocated(byAboutMe));
         driver.findElement(byAboutMe).click();
         LOGGER.info("---Завершено---\n");
     }
@@ -129,7 +132,6 @@ public class PrivateCabinetPage {
     }
 
     public Contact addRandomContact() {
-        WebDriverWait wait = new WebDriverWait(driver, 10);
         wait.until(ExpectedConditions.visibilityOfElementLocated(new By.ByXPath("//button[text()=\"Добавить\"]")));
         WebElement addContact = driver.findElement(new By.ByXPath("//button[text()=\"Добавить\"]"));
 
@@ -151,7 +153,7 @@ public class PrivateCabinetPage {
         contactTypes.get(randomIndex).click();
 
         String selectedType = lastElement.findElement(new By.ByXPath("./div[1]/div[1]/div[1]/div[1]/label/div")).getText();
-        Contact contact = new Contact(selectedType, unText);
+        Contact contact = new Contact(selectedType.trim(), unText.trim());
         LOGGER.info("---Добавление контакта---\n"+contact.toString());
         LOGGER.info("---Завершено---\n");
         return contact;
@@ -162,18 +164,22 @@ public class PrivateCabinetPage {
         List<WebElement> contactsList = getContactsListElements();
         Assertions.assertEquals(contactsList.size(), contacts.size());
         for(int i=0;i<contacts.size();i++) {
+            LOGGER.info("---Проверка контакта №"+(i+1)+"---");
             WebElement contactElement = contactsList.get(i);
             WebElement lastContactInput = contactElement.findElement(new By.ByXPath(".//input[starts-with(@id,'id_contact') and contains(@type,'text')]"));
-            String selectedType = contactElement.findElement(new By.ByXPath("./div[1]/div[1]/div[1]/div[1]/label/div")).getText();
-            String value = lastContactInput.getAttribute("value");
+            String selectedType = contactElement.findElement(new By.ByXPath("./div[1]/div[1]/div[1]/div[1]/label/div")).getText().trim();
+            String value = lastContactInput.getAttribute("value").trim();
             Contact contact = null;
             for (Contact c : contacts) {
                 if (c.text.equals(value)) {
                     contact = c;
                 }
             }
+            LOGGER.info("-Проверка на null-");
             Assertions.assertNotNull(contact);
+            LOGGER.info("-Проверка содаржимого-");
             Assertions.assertEquals(contact.text, value);
+            LOGGER.info("-Проверка типа-\n"+contact.type+"=="+selectedType);
             Assertions.assertEquals(contact.type, selectedType);
         }
     }
