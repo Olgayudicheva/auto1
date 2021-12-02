@@ -13,6 +13,11 @@ import org.junit.jupiter.api.Test;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.chrome.ChromeDriver;
 import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
+import org.openqa.selenium.remote.AbstractDriverOptions;
+import org.openqa.selenium.safari.SafariDriver;
+import org.openqa.selenium.safari.SafariOptions;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,10 +40,23 @@ public class HomeWork7 {
     String blogName = "OlgaYu";
     String dob = "01.01.1990";
 
+    AbstractDriverOptions options(WebDriverFactory.WebDriverName webDriverName) {
+        switch (webDriverName) {
+            case CHROME:
+                return new ChromeOptions();
+            case SAFARI:
+                return new SafariOptions();
+            case FIREFOX:
+                return new FirefoxOptions();
+        }
+        return new ChromeOptions();
+    }
+
     @Test
-    void test1() throws InterruptedException {
-        List<String> arg = new ArrayList<>();
-        driver = WebDriverFactory.create(WebDriverFactory.WebDriverName.parseString(System.getProperty("browser")),arg);
+    void test1() {
+        WebDriverFactory.WebDriverName webDriverName = WebDriverFactory.WebDriverName.parseString(System.getProperty("browser"));
+
+        driver = WebDriverFactory.create(webDriverName,options(webDriverName));
 
         driver.manage().window().maximize();
 
